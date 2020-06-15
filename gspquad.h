@@ -21,11 +21,13 @@ class gspQuad :
         }
 
 	    gspQuad(int pin1, int pin2, void (* cbLower)(int dist), void (* cbHigher)(int dist));
-        bool check();
-        void reset();
+        //bool check();
+        //void reset();
 
-        static void checkAll() {
-            gspGrouped::checkAll(gspQuad::firstInstance);
+        bool _isr();
+
+        static void startCheckAll() {
+            gspGrouped::_isr_startCheckAll(gspQuad::firstInstance);
         }    
 
         inline void minimum(int min) {
@@ -69,9 +71,6 @@ class gspQuad :
             _position = pos;
         }
 
-        inline int _readpins(void) {
-            return digitalRead(_pin2) << 1 | digitalRead(_pin1);
-        }
 
     protected:
         void setFirstInstance(gspGrouped * fi) {gspQuad::firstInstance = fi;}
@@ -83,10 +82,14 @@ class gspQuad :
         void (* _cbLower)(int);
         void (* _cbHigher)(int);
 
+        inline int _readpins(void) {
+            return digitalRead(_pin2) << 1 | digitalRead(_pin1);
+        }
+
+
+
         int _curPos;
         int _oldPos;
-
-        int _readpins(void);
         int _pin1, _pin2;
 
         volatile int _position;

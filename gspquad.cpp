@@ -36,10 +36,10 @@ _cbLower(cbLower), _cbHigher(cbHigher)
 
     // TODO: move this to gspGrouped
     // what's the thought about using interrupts for everything?
-    TIMSK2 |= (1 << TOIE2);		//  enable timer 2 overflow interrupt
+    //TIMSK2 |= (1 << TOIE2);		//  enable timer 2 overflow interrupt
 }
 
-bool gspQuad::check() {
+bool gspQuad::_isr() {
 
     int quadbits = _readpins();
 
@@ -77,4 +77,4 @@ bool gspQuad::check() {
       return true;
 }
 
-void gspQuad::reset(){}
+//void gspQuad::reset(){}
