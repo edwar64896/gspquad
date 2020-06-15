@@ -4,6 +4,9 @@
 #include "Arduino.h"
 #include "gspgrouped.h"
 
+#define GSPQUAD_MODE_STR 1
+#define GSPQUAD_MODE_CB  2
+
 class gspQuad : 
     public gspGrouped {
     
@@ -21,6 +24,7 @@ class gspQuad :
         }
 
 	    gspQuad(int pin1, int pin2, void (* cbLower)(int dist), void (* cbHigher)(int dist));
+        gspQuad(int pin1, int pin2, const char * doDecrement, const char * doIncrement);
         //bool check();
         //void reset();
 
@@ -86,18 +90,17 @@ class gspQuad :
             return digitalRead(_pin2) << 1 | digitalRead(_pin1);
         }
 
-
-
-        int _curPos;
-        int _oldPos;
+        int _curPos, _oldPos;
         int _pin1, _pin2;
 
-        volatile int _position;
+        const char * _szDecrement, * _szIncrement;
+
+        volatile int _position, _previous;
 
         int _min, _max;
         bool _usingmin, _usingmax;
 
-        volatile int _previous;
+        int operationmode=0;
 
 
 };

@@ -34,9 +34,30 @@ _cbLower(cbLower), _cbHigher(cbHigher)
 
     _previous = _readpins();		//  read initial position
 
-    // TODO: move this to gspGrouped
-    // what's the thought about using interrupts for everything?
-    //TIMSK2 |= (1 << TOIE2);		//  enable timer 2 overflow interrupt
+    operationmode=GSPQUAD_MODE_CB;
+
+}
+
+gspQuad::gspQuad(
+    int pin1, int pin2, 
+    const char * doDecrement, const char * doIncrement
+):
+gspGrouped(),
+_pin1(pin1), _pin2(pin2), 
+_position(0),
+_min(0), _max(0), 
+_usingmin(0), _usingmax(0),
+_szDecrement(doDecrement), _szIncrement(doIncrement)
+ {
+    pinMode(pin1, INPUT);
+    pinMode(pin2, INPUT);
+    digitalWrite(pin1, HIGH);		//  activate internal pullups
+    digitalWrite(pin2, HIGH);
+
+    _previous = _readpins();		//  read initial position
+
+    operationmode=GSPQUAD_MODE_STR;
+
 }
 
 bool gspQuad::_isr() {
@@ -61,11 +82,23 @@ bool gspQuad::_isr() {
     _curPos = (position() / 2);
     if (_curPos != _oldPos) {
         int _difPos= _curPos-_oldPos;
-        if (_difPos>0) {
-            _cbHigher(_difPos);
-        } else {
-             _cbLower(_difPos);
+        switch (operationmode) {
+            case GSPQUAD_MODE_CB:
+                if (_difPos>0) {
+                    _cbHigher(_difPos);
+                } else {
+                    _cbLower(_difPos);
+                }
+            break;
+            case GSPQUAD_MODE_STR:
+                if (_difPos>0) {
+                    Serial.println(_szIncrement);
+                } else {
+                    Serial.println(_szDecrement);
+                }
+            break;
         }
+
         if (position() > 100) { // zero the rotary encoder count if too high or low
             position(0);
         }
