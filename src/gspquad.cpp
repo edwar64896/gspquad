@@ -92,9 +92,9 @@ bool gspQuad::_isr() {
             break;
             case GSPQUAD_MODE_STR:
                 if (_difPos>0) {
-                    Serial.println(_szIncrement);
+                    gspGrouped::gspStream.println(_szIncrement);
                 } else {
-                    Serial.println(_szDecrement);
+                    gspGrouped::gspStream.println(_szDecrement);
                 }
             break;
         }
