@@ -31,7 +31,10 @@ class gspQuad :
         bool _isr();
 
         static void startCheckAll() {
-            gspGrouped::_isr_startCheckAll(gspQuad::firstInstance);
+            gspGrouped::_isr_checking = true;
+            gspGrouped::setInitialInstance(gspQuad::firstInstance);
+            gspGrouped::startTimer();
+            //gspGrouped::_isr_startCheckAll(gspQuad::firstInstance);
         }    
 
         inline void minimum(int min) {
