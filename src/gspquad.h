@@ -12,21 +12,9 @@ class gspQuad :
     
     public:
 
-        static gspQuad * makeOne (
-            int _pin1,
-            int _pin2,
-            void (* _cbLower)(int dist),
-            void (* _cbHigher)(int dist)        
-        ) {
-            gspQuad * instance = new gspQuad(_pin1,_pin2,_cbLower,_cbHigher);
-            gspGrouped::register_instance(instance);
-            return instance;
-        }
-
 	    gspQuad(int pin1, int pin2, void (* cbLower)(int dist), void (* cbHigher)(int dist));
         gspQuad(int pin1, int pin2, const char * doDecrement, const char * doIncrement);
-        //bool check();
-        //void reset();
+
 
         bool _isr();
 
@@ -34,7 +22,6 @@ class gspQuad :
             gspGrouped::_isr_checking = true;
             gspGrouped::setInitialInstance(gspQuad::firstInstance);
             gspGrouped::startTimer();
-            //gspGrouped::_isr_startCheckAll(gspQuad::firstInstance);
         }    
 
         inline void minimum(int min) {
