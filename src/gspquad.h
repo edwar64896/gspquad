@@ -20,8 +20,8 @@ class gspQuad :
 
         static void startCheckAll() {
             gspGrouped::_isr_checking = true;
-            gspGrouped::setInitialInstance(gspQuad::firstInstance);
-            gspGrouped::startTimer();
+            gspGrouped::_isr_setInitialInstance(gspQuad::firstInstance);
+            gspGrouped::_isr_startTimer();
         }    
 
         inline void minimum(int min) {
